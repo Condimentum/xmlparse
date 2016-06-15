@@ -2,6 +2,7 @@
 
 import argparse
 import xml.etree.ElementTree as ET
+import json
 
 parser = argparse.ArgumentParser(description='Parse XML and save correct data to database')
 parser.add_argument('inputf', metavar='<Input File>', type=str, help='input file')
@@ -30,6 +31,7 @@ if args.outputf is not None:
 # parse tree from xml
 tree = ET.parse(args.inputf)
 root = tree.getroot()
+pairs = {}
 
 roots = root.findall(path)
 
@@ -40,3 +42,6 @@ for r in roots:
 		elements = r.findall(key)
 		for e in elements:
 			print(e.tag, ":", e.text)
+			pairs[e.tag] = e.text
+
+print(json.dumps(pairs))
