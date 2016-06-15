@@ -6,25 +6,29 @@ import xml.etree.ElementTree as ET
 parser = argparse.ArgumentParser(description='Parse XML and save correct data to database')
 parser.add_argument('inputf', metavar='<Input File>', type=str, help='input file')
 parser.add_argument('--outputf', metavar='<Output File>', type=str, help='output file')
-parser.add_argument('--path', type=str, help='Assing path to root element where program starts searching for keys. Syntax: parent/child/grandchild. If not defined, document root used as root element.')
 parser.add_argument('--keys', type=str, nargs='*', help='Define key values.')
+parser.add_argument('--path', type=str, help='Assing path to root element where program starts searching for keys. Syntax: parent/child/grandchild. If not defined, document root used as root element.')
 
 # parse args
 args = parser.parse_args()
 
 # define search keys
-keys = args.keys
+if args.keys is not None:
+	keys = args.keys
+	print("keys:", keys)
 
 # define nodes
-path = args.path
-nodes = []
-index = 0
-for i in range(0, len( path )-1):
-	if path[i] == '/':
-		nodes.append(path[index:i])
-		index=i+1
-nodes.append(path[index:len( path )])
-print(nodes)
+if args.path is not None:
+	path = "./" + args.path
+# nodes = []
+# index = 0
+# for i in range(0, len( path )-1):
+# 	if path[i] == '/':
+# 		nodes.append(path[index:i])
+# 		index=i+1
+# nodes.append(path[index:len( path )])
+# print("nodes:", nodes)
+	print("path: ", path)
 
 # parse input and output files and print to conlose
 print("Input file: ", args.inputf)
@@ -35,9 +39,12 @@ if args.outputf is not None:
 tree = ET.parse(args.inputf)
 root = tree.getroot()
 
-document = root.find("documents")
+roots = root.findall(path)
 
-for child in document:
-	print(child.tag, ":", child.text)
-
-print(args.keys)
+print("-----------------")
+print("Found value, key pairs:")
+for r in roots:
+	for key in keys:
+		elements = r.findall(key)
+		for e in elements:
+			print(e.tag, ":", e.text)
