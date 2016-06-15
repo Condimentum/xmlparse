@@ -20,14 +20,6 @@ if args.keys is not None:
 # define nodes
 if args.path is not None:
 	path = "./" + args.path
-# nodes = []
-# index = 0
-# for i in range(0, len( path )-1):
-# 	if path[i] == '/':
-# 		nodes.append(path[index:i])
-# 		index=i+1
-# nodes.append(path[index:len( path )])
-# print("nodes:", nodes)
 	print("path: ", path)
 
 # parse input and output files and print to conlose
