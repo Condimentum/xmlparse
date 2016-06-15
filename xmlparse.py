@@ -15,15 +15,15 @@ args = parser.parse_args()
 # define search keys
 if args.keys is not None:
 	keys = args.keys
-	print("keys:", keys)
+#	print("keys:", keys)
 
 # define nodes
 if args.path is not None:
 	path = "./" + args.path
-	print("path: ", path)
+#	print("path: ", path)
 
 # parse input and output files and print to conlose
-print("Input file: ", args.inputf)
+# print("Input file: ", args.inputf)
 
 # parse tree from xml
 tree = ET.parse(args.inputf)
@@ -32,13 +32,13 @@ pairs = {}
 
 roots = root.findall(path)
 
-print("-----------------")
-print("Found value, key pairs:")
+# print("-----------------")
+# print("Found value, key pairs:")
 for r in roots:
 	for key in keys:
 		elements = r.findall(key)
 		for e in elements:
-			print(e.tag, ":", e.text)
+			# print(e.tag, ":", e.text)
 			pairs[e.tag] = e.text
 
 print(json.dumps(pairs))
