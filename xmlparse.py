@@ -7,7 +7,7 @@ import json
 parser = argparse.ArgumentParser(description='XML parser')
 parser.add_argument('inputf', metavar='<Input File>', type=str, help='input file')
 parser.add_argument('--keys', type=str, nargs='*', help='Define key values.')
-parser.add_argument('--path', type=str, help='Assing path to root element where program starts searching for keys. Syntax: parent/child/grandchild. If not defined, document root used as root element.')
+parser.add_argument('--path', type=str, help='Define path to root element where program starts searching for keys. Syntax: parent/child/grandchild. If not defined, document root used as root element.')
 
 # parse args
 args = parser.parse_args()
