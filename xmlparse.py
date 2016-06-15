@@ -6,7 +6,6 @@ import json
 
 parser = argparse.ArgumentParser(description='Parse XML and save correct data to database')
 parser.add_argument('inputf', metavar='<Input File>', type=str, help='input file')
-parser.add_argument('--outputf', metavar='<Output File>', type=str, help='output file')
 parser.add_argument('--keys', type=str, nargs='*', help='Define key values.')
 parser.add_argument('--path', type=str, help='Assing path to root element where program starts searching for keys. Syntax: parent/child/grandchild. If not defined, document root used as root element.')
 
@@ -25,8 +24,6 @@ if args.path is not None:
 
 # parse input and output files and print to conlose
 print("Input file: ", args.inputf)
-if args.outputf is not None:	
-	print("Output file: ", args.outputf)
 
 # parse tree from xml
 tree = ET.parse(args.inputf)
