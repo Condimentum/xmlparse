@@ -40,11 +40,17 @@ else:
 
 # print("-----------------")
 # print("Found value, key pairs:")
+i=0
 for r in roots:
+	tmpdict = {}
 	for key in keys:
 		elements = r.findall(key)
 		for e in elements:
-			# print(e.tag, ":", e.text)
-			pairs[e.tag] = e.text
+			#print(e.tag, ":", e.text)
+			tmpdict[e.tag] = e.text
+	roots[i] = tmpdict
+	i += 1
 
-print(json.dumps(pairs))
+for r in roots:
+	for key in keys:
+		print (key, ":", r[key])
