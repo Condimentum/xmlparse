@@ -30,6 +30,7 @@ if args.path is not None:
 # parse tree from xml
 tree = ET.parse(args.inputf)
 root = tree.getroot()
+dictList = []
 pairs = {}
 
 if args.path is not None:
@@ -40,7 +41,7 @@ else:
 
 # print("-----------------")
 # print("Found value, key pairs:")
-i=0
+
 for r in roots:
 	tmpdict = {}
 	for key in keys:
@@ -48,9 +49,8 @@ for r in roots:
 		for e in elements:
 			#print(e.tag, ":", e.text)
 			tmpdict[e.tag] = e.text
-	roots[i] = tmpdict
-	i += 1
+	dictList.append(tmpdict)
 
-for r in roots:
+for d in dictList:
 	for key in keys:
-		print (key, ":", r[key])
+		print (key, ":", d[key])
