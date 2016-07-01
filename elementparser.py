@@ -47,7 +47,6 @@ else:
 for r in roots:
 	for child in r:
 		for key in pairs:
-			print(child.tag)
 			if child.tag == key and child.text == pairs[key]:
 				ET.dump(r)
 				break
