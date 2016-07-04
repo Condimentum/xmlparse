@@ -3,7 +3,6 @@
 import argparse
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as DOM
-from time import sleep
 
 # for console output
 removedElements = {}
