@@ -13,7 +13,7 @@ def addToRemovedList(tag):
 	else:
 		removedElements[tag] += 1
 
-def main():
+def main(inputf, pairList, path, outputf):
 	# init parser
 	parser = argparse.ArgumentParser(description='XML parser')
 	parser.add_argument('inputf', metavar='<Input File>', type=str, help='input file')
@@ -25,7 +25,8 @@ def main():
 	args = parser.parse_args()
 	
 	# define search keys and values
-	pairList = args.pairs
+	if args.pairs is not None:
+		pairList = args.pairs
 	pairs = {}
 	for pairstr in pairList:
 		i=0
@@ -45,24 +46,27 @@ def main():
 	
 	# define nodes
 	if args.path is not None:
-		i=0
-		j=0
-		k=0
-		path=[]
-		for char in args.path:
-			j+=1
-			if char == '/':
-				path.append(args.path[k:j-1])
-				k=j
-		path.append(args.path[k:])
+		path = args.path
+	i=0
+	j=0
+	k=0
+	pathList=[]
+	for char in path:
+		j+=1
+		if char == '/':
+			pathList.append(path[k:j-1])
+			k=j
+	pathList.append(path[k:])
 	
 	# parse tree from xml
-	tree = ET.parse(args.inputf)
+	if args.inputf is not None:
+		inputf = args.inputf
+	tree = ET.parse(inputf)
 	roots = []
 	roots.append(tree.getroot())
 	
 	# loop through nodes and remove unwanted elements
-	for i, node in enumerate(path):
+	for i, node in enumerate(pathList):
 		print("iteration: ", i+1, " node: ", node)
 		newroots = []
 		for root in roots:
@@ -71,7 +75,7 @@ def main():
 					addToRemovedList(child.tag)
 					root.remove(child)
 				else:
-					if i == len(path) -1: # last node
+					if i == len(pathList) -1: # last node
 						found = True
 						for key, value in pairs.items():
 							if not found:
@@ -93,14 +97,17 @@ def main():
 		print()
 	
 	# write to output
-	if args.output is None:
-		args.output = 'output.xml'
-	tree.write(args.output, encoding="UTF-8", xml_declaration=True)
+	if args.output is not None:
+		outputf = args.output
+	if outputf != '':
+		tree.write(outputf, encoding="UTF-8", xml_declaration=True)
 	
-	print()
-	print("Removed:")
-	for element, number in removedElements.items():
-		print(element, " (", number, ")")
+		print()
+		print("Removed:")
+		for element, number in removedElements.items():
+			print(element, " (", number, ")")
+	else:
+		return tree
 
 if __name__ == "__main__":
-    main()
+    main('', '', '', '')
