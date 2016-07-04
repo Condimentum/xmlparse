@@ -5,6 +5,15 @@ import xml.etree.ElementTree as ET
 import xml.dom.minidom as DOM
 from time import sleep
 
+# for console output
+removedElements = {}
+
+def addToRemovedList(tag):
+	if tag not in removedElements:
+		removedElements[tag] = 1
+	else:
+		removedElements[tag] += 1
+
 # init parser
 parser = argparse.ArgumentParser(description='XML parser')
 parser.add_argument('inputf', metavar='<Input File>', type=str, help='input file')
@@ -26,11 +35,13 @@ for pairstr in pairList:
 			break
 		i += 1
 
-print("Search parameters")
+print("---Search parameters---")
+print()
 for key in pairs:
 	print("key: ",key)
 	print("value: ", pairs[key])
 	print()
+print("------")
 
 # define nodes
 if args.path is not None:
@@ -44,7 +55,6 @@ if args.path is not None:
 			path.append(args.path[k:j-1])
 			k=j
 	path.append(args.path[k:])
-	print("Path: ", path)
 
 # parse tree from xml
 tree = ET.parse(args.inputf)
@@ -56,38 +66,38 @@ for i, node in enumerate(path):
 	print("iteration: ", i+1, " node: ", node)
 	newroots = []
 	for root in roots:
-		#print("root: ", root.tag)
 		for child in list(root):
-			#print("child ", child.tag)
 			if child.tag != node:
-				print("remove ", child.tag)
+				addToRemovedList(child.tag)
 				root.remove(child)
 			else:
 				if i == len(path) -1: # last node
-					# print("last node")
 					found = True
 					for key, value in pairs.items():
 						if not found:
 							break
 						found = False
-						# print(key, value)
-						#sleep(0.5)
 						for c in child:
 							if c.tag == key:
 								if c.text == value:
-									print("Found ", c.tag, " ", c.text)
 									found = True
 									break
 					if not found:
-						print("remove ", child.tag)
+						addToRemovedList(child.tag)
 						root.remove(child)
 					else: print("keep ", child.tag)
 				else:
 					print("keep ", child.tag) 
 					newroots.append(child)
 	roots = newroots
+	print()
 
 # write to output
 if args.output is None:
 	args.output = 'output.xml'
 tree.write(args.output, encoding="UTF-8", xml_declaration=True)
+
+print()
+print("Removed:")
+for element, number in removedElements.items():
+	print(element, " (", number, ")")
