@@ -3,6 +3,8 @@
 import argparse
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as DOM
+import time
+import datetime
 
 # for console output
 removedElements = {}
@@ -115,6 +117,7 @@ def parseElements(inputf, pairs, path, outputf):
 		# write to output
 		if outputf != '':
 			tree.write(outputf, encoding="UTF-8", xml_declaration=True)
+			logSuccess(outputf, time.time())
 		
 			print()
 			print("Removed:")
@@ -123,7 +126,20 @@ def parseElements(inputf, pairs, path, outputf):
 		else:
 			return tree
 	except OSError as e:
-		print("-----file not found-----")
+		print("-----File not found. See log file-----")
+		logOSError(e, time.time())
+
+def logOSError(e, timestamp):
+	f = open('elementparser.log', 'a')
+	log = datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S') + " Error: " + e.strerror + " " + e.filename + "\n"
+	f.write(log)
+	f.close()
+
+def logSuccess(filename, timestamp):
+	f = open('elementparser.log', 'a')
+	log = datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S') + " Successful write: " + filename + "\n"
+	f.write(log)
+	f.close()
 
 if __name__ == "__main__":
     main()
