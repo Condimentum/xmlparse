@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import argparse
 import valueparser
 import os
 import json
@@ -12,6 +13,10 @@ def main():
 	parser.add_argument('--output', type=str, help='Output file')
 	# parse args
 	args = parser.parse_args()
+
+	# default values
+	outputf = None
+	path = None
 	
 	# define search keys
 	if args.keys is not None:
@@ -28,11 +33,19 @@ def main():
 	if args.output is not None:
 		outputf = args.output + ".json"
 
+	print("inputdir:", inputdir)
+	print("keys:", keys)
+
 	dictList = []
 	for filename in os.listdir(inputdir):
-		dictList.extend(valueparser.parseValues(filename, keys, path, ''))
+		dictList.extend(valueparser.parseValues(inputdir+"\\"+filename, keys, path=path))
+
+	print(dictList)
 
 	if outputf is not None:
 		with open (outputf, 'w') as outfile:
 			json.dump(dictList, outfile)
 		print("Write to", outputf)
+
+if __name__ == "__main__":
+    main()

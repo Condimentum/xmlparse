@@ -46,26 +46,14 @@ def main():
 	# END OF Komentoriviparametrien parsiminen
 
 	# Parsitaan tiedostonimet
-	filenames = parsefilenames(search, inputf)
+	filenames = filenameparser.parsefilenames(inputf, searchstring=search, startindex=41, appendBefore=filepath)
 	
 	for i, filename in enumerate(filenames):
-		if filepath is not None:
-			# Muutetaan tiedoston polku oikeaksi
-			filename = filename[40:] # <- 40 merkkiä tiedostopolusta pois
-			filename = filepath + filename # <- laitetaan oikea polku
 		print(filename)
 		outputfilename = outputf + str(i) + ".xml"
 		# Parsitaan elementit
-		parseElements(filename, pairs, path, outputfilename)
+		elementparser.parseElements(filename, pairs, path, outputfilename)
 		# TODO: merkitään tiedosto luetuksi tai siirretään toiseen kansioon
-
-def parsefilenames(search, inputf):
-
-	return filenameparser.parsefilenames(search, inputf)
-
-def parseElements(inputf, pairs, path, outputf):
-
-	elementparser.parseElements(inputf, pairs, path, outputf)
 
 if __name__ == "__main__":
 	main()

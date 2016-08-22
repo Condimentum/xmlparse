@@ -4,7 +4,7 @@ import argparse
 import xml.etree.ElementTree as ET
 import json
 
-def main(inputf, keys, path):
+def main():
 	parser = argparse.ArgumentParser(description='XML parser')
 	parser.add_argument('inputf', metavar='<Input File>', type=str, help='input file')
 	parser.add_argument('keys', type=str, nargs='*', help='Define key values.')
@@ -30,7 +30,7 @@ def main(inputf, keys, path):
 
 	parseValues(inputf, keys, path, outputf)
 
-def parseValues(inputf, keys, path, outputf):
+def parseValues(inputf, keys, path=None, outputf=None):
 	
 	# parse tree from xml
 	tree = ET.parse(inputf)
@@ -68,4 +68,4 @@ def parseValues(inputf, keys, path, outputf):
 	return dictList
 
 if __name__ == "__main__":
-    main('', '', '')
+    main()
