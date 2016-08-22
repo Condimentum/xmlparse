@@ -20,4 +20,4 @@ More information: python elementparser.py -h
 
 Filenameparser.py finds filenames from a text file. If the filename isn't at the beginning of each line, optional search key can be defined.
 
-More information: python filenameparser.py
+More information: python filenameparser.py -h
