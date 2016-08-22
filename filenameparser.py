@@ -3,10 +3,12 @@
 import argparse
 
 def main():
+	# Alustetaan komentoriviparametrit
 	parser = argparse.ArgumentParser(description='File name parser')
 	parser.add_argument('--searchstring', metavar='Search String', type=str, help='String before file name')
 	parser.add_argument('inputf', metavar='<Input File>', type=str, help='input file')
 	
+	# Parsitaan komentoriviparametrit
 	args = parser.parse_args()
 	
 	if args.searchstring is not None:
@@ -18,6 +20,8 @@ def main():
 	if args.inputf is not None:
 		inputf = args.inputf
 
+	# END OF Parsitaan komentoriviparametrit
+
 	parsefilenames(searchstring, inputf)
 
 def parsefilenames(searchstring, inputf):
@@ -25,9 +29,10 @@ def parsefilenames(searchstring, inputf):
 	strln = len(searchstring)
 	filenames = []
 	
+	# Luetaan tiedostoa rivi kerrallaan
 	with open(inputf) as f:
 		for line in f:
-			index = line.find(searchstring)
+			index = line.find(searchstring) # Etsitään oikea kohta hakuehdon perusteella
 			index = index + strln
 			for i, char in enumerate(line[index:]): # välilyönnit pois alusta
 				if char != ' ':
@@ -44,7 +49,7 @@ def parsefilenames(searchstring, inputf):
 
 	print("remove duplicates:")
 	filenames = list(set(filenames))
-	filenames = list(filter(None, filenames))
+	filenames = list(filter(None, filenames)) # Poistetaan duplikaatit
 	print(filenames)
 	return filenames
 

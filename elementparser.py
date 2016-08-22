@@ -20,7 +20,7 @@ def main():
 	parser = argparse.ArgumentParser(description='XML parser')
 	parser.add_argument('inputf', metavar='<Input File>', type=str, help='input file')
 	parser.add_argument('pairs', type=str, nargs="*", help='Define key-value pairs. Syntax: key1:value1 key2:value2')
-	parser.add_argument('--path', type=str, help='Define path to root element where program starts searching for child elements. Syntax: parent/child/grandchild. If not defined, document root used as root element.')
+	parser.add_argument('--xpath', type=str, help='Define path to root element where program starts searching for child elements. Syntax: parent/child/grandchild. If not defined, document root used as root element.')
 	parser.add_argument('--output', type=str, help='Output file')
 	
 	# parse args
@@ -39,8 +39,8 @@ def main():
 				i += 1
 	
 	# define nodes
-	if args.path is not None:
-		path = args.path
+	if args.xpath is not None:
+		path = args.xpath
 	else: path = ''
 	
 	# parse tree from xml
