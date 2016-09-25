@@ -4,6 +4,7 @@ import argparse
 import valueparser
 import os
 import json
+import dicttoxml
 
 def main():
 	parser = argparse.ArgumentParser(description='XML parser')
@@ -31,7 +32,7 @@ def main():
 		inputdir = args.inputdir
 
 	if args.output is not None:
-		outputf = args.output + ".json"
+		outputf, extension = os.path.splitext(args.output)
 
 	print("inputdir:", inputdir)
 	print("keys:", keys)
@@ -43,9 +44,17 @@ def main():
 	print(dictList)
 
 	if outputf is not None:
-		with open (outputf, 'w') as outfile:
-			json.dump(dictList, outfile)
-		print("Write to", outputf)
+		outputf=outputf+extension
+		if extension.lower() == '.json':
+			with open (outputf, 'w') as outfile:
+				json.dump(dictList, outfile)
+			print("Write to", outputf)
+		elif extension.lower() == '.xml':
+			f = open(outputf, 'w')
+			f.write(dicttoxml.dicttoxml(dictList).decode("utf-8"))
+			print("Write to", outputf)
+		else:
+			print("Extension for output file must be .json or .xml")
 
 if __name__ == "__main__":
     main()
